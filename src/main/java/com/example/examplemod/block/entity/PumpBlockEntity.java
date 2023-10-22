@@ -14,6 +14,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
@@ -128,6 +129,46 @@ public class PumpBlockEntity extends BlockEntity {
 
         return super.getCapability(cap, direction);
     }
+
+    /**
+     *  返回目前机器的状态
+     * @return
+     */
+    PumpState getState() {
+        // 如果超出了范围就是完成了
+        if (range > 64) {
+            return PumpState.DONE;
+            // 有红石信号
+        } else if (level.hasNeighborSignal(worldPosition)) {
+            return PumpState.REDSTONE;
+            // 没有能量
+        } else if (energy.getEnergyStored() == 0) {
+            return PumpState.ENERGY;
+            // 满了
+        } else if (tank.getFluidAmount() > tank.getCapacity() - FluidType.BUCKET_VOLUME) {
+            return PumpState.FULL;
+        } else {
+            // 正常工作
+            return PumpState.WORKING;
+        }
+    }
+
+    /**
+     * 获得当前抽取的方块
+     * @return
+     */
+    BlockPos getCurrentPosition() {
+        return currentPos == null ? worldPosition.below() : currentPos;
+    }
+
+    /**
+     * 获取当前的挖掘范围
+     * @return
+     */
+    int getRange() {
+        return range;
+    }
+
 
     /**
      * 水槽代码

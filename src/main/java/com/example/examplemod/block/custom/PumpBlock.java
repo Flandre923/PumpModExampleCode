@@ -1,6 +1,7 @@
 package com.example.examplemod.block.custom;
 
 import com.example.examplemod.block.entity.PumpBlockEntity;
+import com.example.examplemod.block.entity.PumpState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -44,6 +45,12 @@ public class PumpBlock extends Block implements EntityBlock {
                 IEnergyStorage energy = pump.getCapability(ForgeCapabilities.ENERGY).orElse(null);
                 if (energy == null) {
                     return InteractionResult.SUCCESS;
+                }
+                // 根据pump状态获得提示词
+                Component message = PumpState.getMessage(pump);
+
+                if (message != null) {
+                    player.sendSystemMessage(message);
                 }
                 // 打印方块实体的数据。
                 player.sendSystemMessage(Component.translatable("当前能量" +energy.getEnergyStored()+" 最大能量:"+ energy.getMaxEnergyStored()));
