@@ -1,6 +1,7 @@
 package com.example.examplemod;
 
 import com.example.examplemod.block.ModBlocks;
+import com.example.examplemod.block.entity.ModBlockEntities;
 import com.example.examplemod.item.ModItems;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
@@ -42,6 +43,7 @@ public class ExampleMod
         modEventBus.addListener(this::commonSetup);
         ModBlocks.register(modEventBus);
         ModItems.register(modEventBus);
+        ModBlockEntities.register(modEventBus); // 注册总线
         modEventBus.addListener(ExampleMod::onRegister);
         MinecraftForge.EVENT_BUS.register(this);
     }

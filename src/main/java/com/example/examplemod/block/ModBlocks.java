@@ -23,8 +23,6 @@ public class ModBlocks {
     public static RegistryObject<PumpBlock> PUMP_BLOCK = BLOCKS.register("pump", PumpBlock::new);;
 
 
-
-
     public static void register(IEventBus eventBus){
         BLOCKS.register(eventBus);
     }
